@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+
 int __cdecl compareInt(const void *xPtr, const void *yPtr) {
     int x = *(int *)xPtr, y = *(int *)yPtr;
     return (x > y) - (x < y);
@@ -200,8 +201,8 @@ void testArrayFloat(IEcoLab1* pIEcoLab1, IEcoMemoryAllocator1* pIMem, uint32_t c
 
 	for (i = 0; i < curSize; ++i) {
 		if (fabs(randomArray[i] - randomArraySTD[i]) > 1e-6) {
-			printf("\Float: MISMATCH: %d %d\n", randomArray[i], randomArraySTD[i]);
-			fprintf(file, "Float: MISMATCH: %d %d\n", randomArray[i], randomArraySTD[i]);
+			printf("\Float: MISMATCH: %f %f\n", randomArray[i], randomArraySTD[i]);
+			fprintf(file, "Float: MISMATCH: %f %f\n", randomArray[i], randomArraySTD[i]);
 			break;
 		}
 	}
@@ -234,7 +235,7 @@ void testArrayDouble(IEcoLab1* pIEcoLab1, IEcoMemoryAllocator1* pIMem, uint32_t 
 	pIMem->pVTbl->Copy(pIMem, randomArraySTD, randomArray, sizeof(double) * curSize);
 
 	beginSTD = clock();
-	qsort(randomArraySTD, curSize, sizeof(double), compareFloat); 
+	qsort(randomArraySTD, curSize, sizeof(double), compareDouble); 
 	endSTD = clock();
 	timeSTD = (double)(endSTD - beginSTD);
 
@@ -248,8 +249,8 @@ void testArrayDouble(IEcoLab1* pIEcoLab1, IEcoMemoryAllocator1* pIMem, uint32_t 
 
 	for (i = 0; i < curSize; ++i) {
 		if (fabs(randomArray[i] - randomArraySTD[i]) > 1e-6) {
-			printf("\Double: MISMATCH: %d %d\n", randomArray[i], randomArraySTD[i]);
-			fprintf(file, "Double: MISMATCH: %d %d\n", randomArray[i], randomArraySTD[i]);
+			printf("\Double: MISMATCH: %f %f\n", randomArray[i], randomArraySTD[i]);
+			fprintf(file, "Double: MISMATCH: %f %f\n", randomArray[i], randomArraySTD[i]);
 			break;
 		}
 	}
@@ -282,7 +283,7 @@ void testArrayLongDouble(IEcoLab1* pIEcoLab1, IEcoMemoryAllocator1* pIMem, uint3
 	pIMem->pVTbl->Copy(pIMem, randomArraySTD, randomArray, sizeof(long double) * curSize);
 
 	beginSTD = clock();
-	qsort(randomArraySTD, curSize, sizeof(long double), compareFloat); 
+	qsort(randomArraySTD, curSize, sizeof(long double), compareLongDouble); 
 	endSTD = clock();
 	timeSTD = (double)(endSTD - beginSTD);
 
@@ -296,8 +297,8 @@ void testArrayLongDouble(IEcoLab1* pIEcoLab1, IEcoMemoryAllocator1* pIMem, uint3
 
 	for (i = 0; i < curSize; ++i) {
 		if (fabs(randomArray[i] - randomArraySTD[i]) > 1e-6) {
-			printf("\LongDouble: MISMATCH: %d %d\n", randomArray[i], randomArraySTD[i]);
-			fprintf(file, "LongDouble: MISMATCH: %d %d\n", randomArray[i], randomArraySTD[i]);
+			printf("\LongDouble: MISMATCH: %f %f\n", randomArray[i], randomArraySTD[i]);
+			fprintf(file, "LongDouble: MISMATCH: %f %f\n", randomArray[i], randomArraySTD[i]);
 			break;
 		}
 	}
