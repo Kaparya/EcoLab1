@@ -37,6 +37,18 @@ int __cdecl compareLong(const void *xPtr, const void *yPtr) {
     long x = *(long *)xPtr, y = *(long *)yPtr;
     return (x > y) - (x < y);
 }
+int __cdecl compareFloat(const void *xPtr, const void *yPtr) {
+    float x = *(float *)xPtr, y = *(float *)yPtr;
+    return (x > y) - (x < y);
+}
+int __cdecl compareDouble(const void *xPtr, const void *yPtr) {
+    double x = *(double *)xPtr, y = *(double *)yPtr;
+    return (x > y) - (x < y);
+}
+int __cdecl compareLongDouble(const void *xPtr, const void *yPtr) {
+    long double x = *(long double *)xPtr, y = *(long double *)yPtr;
+    return (x > y) - (x < y);
+}
 
 int randInt(int min, int max) {
     return rand() % (max - min) + min;
@@ -44,6 +56,18 @@ int randInt(int min, int max) {
 
 long randLong(long min, long max) {
     return rand() % (max - min) + min;
+}
+
+float randFloat(float min, float max) {
+    return min + (max - min) * ((float)rand() / (float)RAND_MAX);
+}
+
+double randDouble(double min, double max) {
+    return min + (max - min) * ((double)rand() / (double)RAND_MAX);
+}
+
+long double randLongDouble(long double min, long double max) {
+    return min + (max - min) * ((long double)rand() / (long double)RAND_MAX);
 }
 
 void testArrayInt(IEcoLab1* pIEcoLab1, IEcoMemoryAllocator1* pIMem, uint32_t curSize, FILE* file) {
@@ -142,6 +166,150 @@ void testArrayLong(IEcoLab1* pIEcoLab1, IEcoMemoryAllocator1* pIMem, uint32_t cu
     fprintf(file, "%s,%s,%d,%lf\n", "QuickSTD", "Long", curSize, timeSTD);
 }
 
+void testArrayFloat(IEcoLab1* pIEcoLab1, IEcoMemoryAllocator1* pIMem, uint32_t curSize, FILE* file) {
+	float* randomArray = 0;
+	float* randomArraySTD;
+	int16_t result = 0;
+
+	uint32_t i = 0;
+
+	clock_t begin, beginSTD;
+    clock_t end, endSTD;
+	double time, timeSTD;
+
+	randomArray = (float*) pIMem->pVTbl->Alloc(pIMem, sizeof(float) * curSize);
+	randomArraySTD = (float *) pIMem->pVTbl->Alloc(pIMem, sizeof(float) * curSize);
+	// ---------------
+	for (i = 0; i < curSize; ++i) {
+		randomArray[i] = randFloat(-1000,1000);
+	}
+	pIMem->pVTbl->Copy(pIMem, randomArraySTD, randomArray, sizeof(float) * curSize);
+
+	beginSTD = clock();
+	qsort(randomArraySTD, curSize, sizeof(float), compareFloat); 
+	endSTD = clock();
+	timeSTD = (double)(endSTD - beginSTD);
+
+	begin = clock();
+	result = pIEcoLab1->pVTbl->MergeSortFloat(pIEcoLab1, randomArray, curSize); 
+	end = clock();
+	time = (double)(end - begin);
+
+	printf("Float: MergeSorted array of %d elements in %f:\n", curSize, time);
+	printf("Float: STD sorted array of %d elements in %f:\n", curSize, timeSTD);
+
+	for (i = 0; i < curSize; ++i) {
+		if (fabs(randomArray[i] - randomArraySTD[i]) > 1e-6) {
+			printf("\Float: MISMATCH: %d %d\n", randomArray[i], randomArraySTD[i]);
+			fprintf(file, "Float: MISMATCH: %d %d\n", randomArray[i], randomArraySTD[i]);
+			break;
+		}
+	}
+
+	/* Освобождение блока памяти */
+	pIMem->pVTbl->Free(pIMem, randomArray);
+	pIMem->pVTbl->Free(pIMem, randomArraySTD);
+
+    fprintf(file, "%s,%s,%d,%lf\n", "MergeSort", "Float", curSize, time);
+    fprintf(file, "%s,%s,%d,%lf\n", "QuickSTD", "Float", curSize, timeSTD);
+}
+
+void testArrayDouble(IEcoLab1* pIEcoLab1, IEcoMemoryAllocator1* pIMem, uint32_t curSize, FILE* file) {
+	double* randomArray = 0;
+	double* randomArraySTD;
+	int16_t result = 0;
+
+	uint32_t i = 0;
+
+	clock_t begin, beginSTD;
+    clock_t end, endSTD;
+	double time, timeSTD;
+
+	randomArray = (double*) pIMem->pVTbl->Alloc(pIMem, sizeof(double) * curSize);
+	randomArraySTD = (double *) pIMem->pVTbl->Alloc(pIMem, sizeof(double) * curSize);
+	// ---------------
+	for (i = 0; i < curSize; ++i) {
+		randomArray[i] = randDouble(-10000, 10000);
+	}
+	pIMem->pVTbl->Copy(pIMem, randomArraySTD, randomArray, sizeof(double) * curSize);
+
+	beginSTD = clock();
+	qsort(randomArraySTD, curSize, sizeof(double), compareFloat); 
+	endSTD = clock();
+	timeSTD = (double)(endSTD - beginSTD);
+
+	begin = clock();
+	result = pIEcoLab1->pVTbl->MergeSortDouble(pIEcoLab1, randomArray, curSize); 
+	end = clock();
+	time = (double)(end - begin);
+
+	printf("Double: MergeSorted array of %d elements in %f:\n", curSize, time);
+	printf("Double: STD sorted array of %d elements in %f:\n", curSize, timeSTD);
+
+	for (i = 0; i < curSize; ++i) {
+		if (fabs(randomArray[i] - randomArraySTD[i]) > 1e-6) {
+			printf("\Double: MISMATCH: %d %d\n", randomArray[i], randomArraySTD[i]);
+			fprintf(file, "Double: MISMATCH: %d %d\n", randomArray[i], randomArraySTD[i]);
+			break;
+		}
+	}
+
+	/* Освобождение блока памяти */
+	pIMem->pVTbl->Free(pIMem, randomArray);
+	pIMem->pVTbl->Free(pIMem, randomArraySTD);
+
+    fprintf(file, "%s,%s,%d,%lf\n", "MergeSort", "Double", curSize, time);
+    fprintf(file, "%s,%s,%d,%lf\n", "QuickSTD", "Double", curSize, timeSTD);
+}
+
+void testArrayLongDouble(IEcoLab1* pIEcoLab1, IEcoMemoryAllocator1* pIMem, uint32_t curSize, FILE* file) {
+	long double* randomArray = 0;
+	long double* randomArraySTD;
+	int16_t result = 0;
+
+	uint32_t i = 0;
+
+	clock_t begin, beginSTD;
+    clock_t end, endSTD;
+	double time, timeSTD;
+
+	randomArray = (long double*) pIMem->pVTbl->Alloc(pIMem, sizeof(long double) * curSize);
+	randomArraySTD = (long double *) pIMem->pVTbl->Alloc(pIMem, sizeof(long double) * curSize);
+	// ---------------
+	for (i = 0; i < curSize; ++i) {
+		randomArray[i] = randLongDouble(-1000, 1000);
+	}
+	pIMem->pVTbl->Copy(pIMem, randomArraySTD, randomArray, sizeof(long double) * curSize);
+
+	beginSTD = clock();
+	qsort(randomArraySTD, curSize, sizeof(long double), compareFloat); 
+	endSTD = clock();
+	timeSTD = (double)(endSTD - beginSTD);
+
+	begin = clock();
+	result = pIEcoLab1->pVTbl->MergeSortLongDouble(pIEcoLab1, randomArray, curSize); 
+	end = clock();
+	time = (double)(end - begin);
+
+	printf("LongDouble: MergeSorted array of %d elements in %f:\n", curSize, time);
+	printf("LongDouble: STD sorted array of %d elements in %f:\n", curSize, timeSTD);
+
+	for (i = 0; i < curSize; ++i) {
+		if (fabs(randomArray[i] - randomArraySTD[i]) > 1e-6) {
+			printf("\LongDouble: MISMATCH: %d %d\n", randomArray[i], randomArraySTD[i]);
+			fprintf(file, "LongDouble: MISMATCH: %d %d\n", randomArray[i], randomArraySTD[i]);
+			break;
+		}
+	}
+
+	/* Освобождение блока памяти */
+	pIMem->pVTbl->Free(pIMem, randomArray);
+	pIMem->pVTbl->Free(pIMem, randomArraySTD);
+
+    fprintf(file, "%s,%s,%d,%lf\n", "MergeSort", "LongDouble", curSize, time);
+    fprintf(file, "%s,%s,%d,%lf\n", "QuickSTD", "LongDouble", curSize, timeSTD);
+}
+
 /*
  *
  * <сводка>
@@ -219,6 +387,9 @@ int16_t EcoMain(IEcoUnknown* pIUnk) {
 	for (i = 0; i < sizesNumber; ++i) {
 		testArrayInt(pIEcoLab1, pIMem, sizes[i], file);
 		testArrayLong(pIEcoLab1, pIMem, sizes[i], file);
+		testArrayFloat(pIEcoLab1, pIMem, sizes[i], file);
+		testArrayDouble(pIEcoLab1, pIMem, sizes[i], file);
+		testArrayLongDouble(pIEcoLab1, pIMem, sizes[i], file);
 	}
 
 Release:

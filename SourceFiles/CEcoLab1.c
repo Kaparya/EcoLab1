@@ -289,6 +289,207 @@ static void doMergeSortLong(CEcoLab1* pCMe, long* arr, int l, int r) {
 /*
  *
  * <сводка>
+ *   Функция doMergeSortFloat
+ * </сводка>
+ *
+ * <описание>
+ *   Рекурсивная функция, выполняющая сортировку слиянием, с типом Float
+ * </описание>
+ *
+ */
+static void doMergeSortFloat(CEcoLab1* pCMe, float* arr, int l, int r) {
+	int midIdx, firstIdx, secondIdx;
+	int curPartIndex = 0;
+	float* curPart = 0;
+	int swapValue;
+
+	if (l >= r) {
+		return;
+	} else if (l + 1 == r) {
+		if (arr[l] > arr[r]) {
+			swapValue = arr[l];
+			arr[l] = arr[r];
+			arr[r] = swapValue;
+		}
+		return;
+	}
+
+	midIdx = (l + r) / 2;
+	doMergeSortFloat(pCMe, arr, l, midIdx);
+	doMergeSortFloat(pCMe, arr, midIdx + 1, r);
+
+	firstIdx = l;
+	secondIdx = midIdx + 1;
+	curPartIndex = 0;
+	curPart = (float*)pCMe->m_pIMem->pVTbl->Alloc(pCMe->m_pIMem, sizeof(float) * (r - l + 1));
+
+	while (firstIdx <= midIdx && secondIdx <= r) {
+		if (arr[firstIdx] < arr[secondIdx]) {
+			curPart[curPartIndex] = arr[firstIdx];
+			curPartIndex++;
+			firstIdx++;
+		} else {
+			curPart[curPartIndex] = arr[secondIdx];
+			curPartIndex++;
+			secondIdx++;
+		}
+	}
+
+	while (secondIdx <= r) {
+		curPart[curPartIndex] = arr[secondIdx];
+		curPartIndex++;
+		secondIdx++;
+	}
+	while (firstIdx <= midIdx) {
+		curPart[curPartIndex] = arr[firstIdx];
+		curPartIndex++;
+		firstIdx++;
+	}
+
+	for (curPartIndex = l; curPartIndex <= r; ++curPartIndex) {
+		arr[curPartIndex] = curPart[curPartIndex - l];
+	}
+	
+	pCMe->m_pIMem->pVTbl->Free(pCMe->m_pIMem, curPart);
+}
+
+/*
+ *
+ * <сводка>
+ *   Функция doMergeSortDouble
+ * </сводка>
+ *
+ * <описание>
+ *   Рекурсивная функция, выполняющая сортировку слиянием, с типом Double
+ * </описание>
+ *
+ */
+static void doMergeSortDouble(CEcoLab1* pCMe, double* arr, int l, int r) {
+	int midIdx, firstIdx, secondIdx;
+	int curPartIndex = 0;
+	double* curPart = 0;
+	int swapValue;
+
+	if (l >= r) {
+		return;
+	} else if (l + 1 == r) {
+		if (arr[l] > arr[r]) {
+			swapValue = arr[l];
+			arr[l] = arr[r];
+			arr[r] = swapValue;
+		}
+		return;
+	}
+
+	midIdx = (l + r) / 2;
+	doMergeSortDouble(pCMe, arr, l, midIdx);
+	doMergeSortDouble(pCMe, arr, midIdx + 1, r);
+
+	firstIdx = l;
+	secondIdx = midIdx + 1;
+	curPartIndex = 0;
+	curPart = (double*)pCMe->m_pIMem->pVTbl->Alloc(pCMe->m_pIMem, sizeof(double) * (r - l + 1));
+
+	while (firstIdx <= midIdx && secondIdx <= r) {
+		if (arr[firstIdx] < arr[secondIdx]) {
+			curPart[curPartIndex] = arr[firstIdx];
+			curPartIndex++;
+			firstIdx++;
+		} else {
+			curPart[curPartIndex] = arr[secondIdx];
+			curPartIndex++;
+			secondIdx++;
+		}
+	}
+
+	while (secondIdx <= r) {
+		curPart[curPartIndex] = arr[secondIdx];
+		curPartIndex++;
+		secondIdx++;
+	}
+	while (firstIdx <= midIdx) {
+		curPart[curPartIndex] = arr[firstIdx];
+		curPartIndex++;
+		firstIdx++;
+	}
+
+	for (curPartIndex = l; curPartIndex <= r; ++curPartIndex) {
+		arr[curPartIndex] = curPart[curPartIndex - l];
+	}
+	
+	pCMe->m_pIMem->pVTbl->Free(pCMe->m_pIMem, curPart);
+}
+
+/*
+ *
+ * <сводка>
+ *   Функция doMergeSortLongDouble
+ * </сводка>
+ *
+ * <описание>
+ *   Рекурсивная функция, выполняющая сортировку слиянием, с типом LongDouble
+ * </описание>
+ *
+ */
+static void doMergeSortLongDouble(CEcoLab1* pCMe, long double* arr, int l, int r) {
+	int midIdx, firstIdx, secondIdx;
+	int curPartIndex = 0;
+	long double* curPart = 0;
+	int swapValue;
+
+	if (l >= r) {
+		return;
+	} else if (l + 1 == r) {
+		if (arr[l] > arr[r]) {
+			swapValue = arr[l];
+			arr[l] = arr[r];
+			arr[r] = swapValue;
+		}
+		return;
+	}
+
+	midIdx = (l + r) / 2;
+	doMergeSortLongDouble(pCMe, arr, l, midIdx);
+	doMergeSortLongDouble(pCMe, arr, midIdx + 1, r);
+
+	firstIdx = l;
+	secondIdx = midIdx + 1;
+	curPartIndex = 0;
+	curPart = (long double*)pCMe->m_pIMem->pVTbl->Alloc(pCMe->m_pIMem, sizeof(long double) * (r - l + 1));
+
+	while (firstIdx <= midIdx && secondIdx <= r) {
+		if (arr[firstIdx] < arr[secondIdx]) {
+			curPart[curPartIndex] = arr[firstIdx];
+			curPartIndex++;
+			firstIdx++;
+		} else {
+			curPart[curPartIndex] = arr[secondIdx];
+			curPartIndex++;
+			secondIdx++;
+		}
+	}
+
+	while (secondIdx <= r) {
+		curPart[curPartIndex] = arr[secondIdx];
+		curPartIndex++;
+		secondIdx++;
+	}
+	while (firstIdx <= midIdx) {
+		curPart[curPartIndex] = arr[firstIdx];
+		curPartIndex++;
+		firstIdx++;
+	}
+
+	for (curPartIndex = l; curPartIndex <= r; ++curPartIndex) {
+		arr[curPartIndex] = curPart[curPartIndex - l];
+	}
+	
+	pCMe->m_pIMem->pVTbl->Free(pCMe->m_pIMem, curPart);
+}
+
+/*
+ *
+ * <сводка>
  *   Функция MergeSortInt
  * </сводка>
  *
@@ -336,6 +537,81 @@ static int16_t ECOCALLMETHOD CEcoLab1_MergeSortLong(
 	return ERR_ECO_SUCCESES;
 }
 
+/*
+ *
+ * <сводка>
+ *   Функция MergeSortFloat
+ * </сводка>
+ *
+ * <описание>
+ *   Сортировка слиянием для типа Float
+ * </описание>
+ *
+ */
+static int16_t ECOCALLMETHOD CEcoLab1_MergeSortFloat(
+	/* in */ IEcoLab1Ptr_t me,
+	/* in */ float* arrayPtr,
+	/* in */ int size
+) {
+	CEcoLab1* pCMe = (CEcoLab1*)me;
+
+    if (me == 0 || arrayPtr == 0 || size <= 0) {
+        return ERR_ECO_POINTER;
+    }
+    doMergeSortFloat(pCMe, arrayPtr, 0, size - 1);
+	return ERR_ECO_SUCCESES;
+}
+
+/*
+ *
+ * <сводка>
+ *   Функция MergeSortDouble
+ * </сводка>
+ *
+ * <описание>
+ *   Сортировка слиянием для типа Double
+ * </описание>
+ *
+ */
+static int16_t ECOCALLMETHOD CEcoLab1_MergeSortDouble(
+	/* in */ IEcoLab1Ptr_t me,
+	/* in */ double* arrayPtr,
+	/* in */ int size
+) {
+	CEcoLab1* pCMe = (CEcoLab1*)me;
+
+    if (me == 0 || arrayPtr == 0 || size <= 0) {
+        return ERR_ECO_POINTER;
+    }
+    doMergeSortDouble(pCMe, arrayPtr, 0, size - 1);
+	return ERR_ECO_SUCCESES;
+}
+
+/*
+ *
+ * <сводка>
+ *   Функция MergeSortLongDouble
+ * </сводка>
+ *
+ * <описание>
+ *   Сортировка слиянием для типа LongDouble
+ * </описание>
+ *
+ */
+static int16_t ECOCALLMETHOD CEcoLab1_MergeSortLongDouble(
+	/* in */ IEcoLab1Ptr_t me,
+	/* in */ long double* arrayPtr,
+	/* in */ int size
+) {
+	CEcoLab1* pCMe = (CEcoLab1*)me;
+
+    if (me == 0 || arrayPtr == 0 || size <= 0) {
+        return ERR_ECO_POINTER;
+    }
+    doMergeSortLongDouble(pCMe, arrayPtr, 0, size - 1);
+	return ERR_ECO_SUCCESES;
+}
+
 
 /* Create Virtual Table IEcoLab1 */
 IEcoLab1VTbl g_x277FC00C35624096AFCFC125B94EEC90VTbl = {
@@ -344,6 +620,9 @@ IEcoLab1VTbl g_x277FC00C35624096AFCFC125B94EEC90VTbl = {
     CEcoLab1_Release,
 	CEcoLab1_MergeSortInt,
 	CEcoLab1_MergeSortLong,
+	CEcoLab1_MergeSortFloat,
+	CEcoLab1_MergeSortDouble,
+	CEcoLab1_MergeSortLongDouble,
 };
 
 /*

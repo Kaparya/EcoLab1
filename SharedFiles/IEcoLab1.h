@@ -53,6 +53,24 @@ typedef struct IEcoLab1VTbl {
 		/* in */ int size
 	);
 
+    int16_t (ECOCALLMETHOD *MergeSortFloat)(
+		/* in */ IEcoLab1Ptr_t me,
+		/* in */ float* arrayPtr,
+		/* in */ int size
+	);
+
+    int16_t (ECOCALLMETHOD *MergeSortDouble)(
+		/* in */ IEcoLab1Ptr_t me,
+		/* in */ double* arrayPtr,
+		/* in */ int size
+	);
+
+    int16_t (ECOCALLMETHOD *MergeSortLongDouble)(
+		/* in */ IEcoLab1Ptr_t me,
+		/* in */ long double* arrayPtr,
+		/* in */ int size
+	);
+
 } IEcoLab1VTbl, *IEcoLab1VTblPtr;
 
 interface IEcoLab1 {
