@@ -234,7 +234,7 @@ static void doMergeSortLong(CEcoLab1* pCMe, long* arr, int l, int r) {
 	int midIdx, firstIdx, secondIdx;
 	int curPartIndex = 0;
 	long* curPart = 0;
-	int swapValue;
+	long swapValue;
 
 	if (l >= r) {
 		return;
@@ -301,7 +301,7 @@ static void doMergeSortFloat(CEcoLab1* pCMe, float* arr, int l, int r) {
 	int midIdx, firstIdx, secondIdx;
 	int curPartIndex = 0;
 	float* curPart = 0;
-	int swapValue;
+	float swapValue;
 
 	if (l >= r) {
 		return;
@@ -368,7 +368,7 @@ static void doMergeSortDouble(CEcoLab1* pCMe, double* arr, int l, int r) {
 	int midIdx, firstIdx, secondIdx;
 	int curPartIndex = 0;
 	double* curPart = 0;
-	int swapValue;
+	double swapValue;
 
 	if (l >= r) {
 		return;
@@ -435,7 +435,7 @@ static void doMergeSortLongDouble(CEcoLab1* pCMe, long double* arr, int l, int r
 	int midIdx, firstIdx, secondIdx;
 	int curPartIndex = 0;
 	long double* curPart = 0;
-	int swapValue;
+	long double swapValue;
 
 	if (l >= r) {
 		return;

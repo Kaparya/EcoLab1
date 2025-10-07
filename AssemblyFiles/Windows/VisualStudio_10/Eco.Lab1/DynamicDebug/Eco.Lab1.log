@@ -1,0 +1,18 @@
+﻿Build started 07.10.2025 19:08:29.
+     1>Project "D:\Damir\Eco.Lab1\AssemblyFiles\Windows\VisualStudio_10\Eco.Lab1.vcxproj" on node 3 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Eco.Lab1\DynamicDebug\Eco.Lab1.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(D:\Damir\Eco.Lab1\AssemblyFiles\Windows\VisualStudio_10\Eco.Lab1\DynamicDebug\1F5DF16EE1BF43B999A434ED38FE8F3A.dll) does not match the Linker's OutputFile property value (D:\Damir\Eco.Lab1\BuildFiles\Windows\x86\DynamicDebug\1F5DF16EE1BF43B999A434ED38FE8F3A.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+       Link:
+         All outputs are up-to-date.
+         Eco.Lab1.vcxproj -> D:\Damir\Eco.Lab1\AssemblyFiles\Windows\VisualStudio_10\Eco.Lab1\DynamicDebug\1F5DF16EE1BF43B999A434ED38FE8F3A.dll
+       FinalizeBuildStatus:
+         Deleting file "Eco.Lab1\DynamicDebug\Eco.Lab1.unsuccessfulbuild".
+         Touching "Eco.Lab1\DynamicDebug\Eco.Lab1.lastbuildstate".
+     1>Done Building Project "D:\Damir\Eco.Lab1\AssemblyFiles\Windows\VisualStudio_10\Eco.Lab1.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.07
