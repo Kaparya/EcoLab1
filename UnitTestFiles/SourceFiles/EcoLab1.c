@@ -19,6 +19,14 @@
 
 
 /* Eco OS */
+#include "IEcoCalculatorX.h" 
+#include "IEcoCalculatorY.h"
+
+#include "IdEcoCalculatorA.h"
+#include "IdEcoCalculatorB.h"
+#include "IdEcoCalculatorD.h"
+#include "IdEcoCalculatorE.h"
+
 #include "IEcoSystem1.h"
 #include "IdEcoMemoryManager1.h"
 #include "IdEcoInterfaceBus1.h"
@@ -28,7 +36,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
 
 int __cdecl compareInt(const void *xPtr, const void *yPtr) {
     int x = *(int *)xPtr, y = *(int *)yPtr;
@@ -333,6 +340,9 @@ int16_t EcoMain(IEcoUnknown* pIUnk) {
     /* Указатель на тестируемый интерфейс */
     IEcoLab1* pIEcoLab1 = 0;
 
+	IEcoCalculatorX* pIEcoCalculatorX = 0;
+	IEcoCalculatorY* pIEcoCalculatorY = 0;
+
 	int sizes[10] = {10, 100, 1000, 10000, 100000, 1000000, 3000000, 7000000, 10000000};
 	int sizesNumber = 10;
 
@@ -381,11 +391,104 @@ int16_t EcoMain(IEcoUnknown* pIUnk) {
         goto Release;
     }
 
+	/* Тестирование включения и аггрегирования компонент */
+	printf("Access to other components from EcoLab1\n");
+	result = pIEcoLab1->pVTbl->QueryInterface(pIEcoLab1, &IID_IEcoCalculatorX, (void **) &pIEcoCalculatorX);
+	printf("  IEcoCalculatorX from EcoLab1:\n");
+	if (result == 0) {
+		printf("    %d + %d = %d\n", 28, 29, pIEcoCalculatorX->pVTbl->Addition(pIEcoCalculatorX, 28, 29));
+		printf("    %d - %d = %d\n", 30, 31, pIEcoCalculatorX->pVTbl->Subtraction(pIEcoCalculatorX, 30, 31));
+		printf("    accessable\n");
+	} else {
+		printf("    not found\n");
+	}
+	
+    result = pIEcoLab1->pVTbl->QueryInterface(pIEcoLab1, &IID_IEcoCalculatorY, (void **) &pIEcoCalculatorY);
+	printf("  IEcoCalculatorY from EcoLab1:\n");
+	if (result == 0) {
+		printf("    %d * %d = %d\n", 11, 10, pIEcoCalculatorY->pVTbl->Multiplication(pIEcoCalculatorY, 11, 10));
+		printf("    %d / %d = %d\n", 123, 123, pIEcoCalculatorY->pVTbl->Division(pIEcoCalculatorY, 123, 123));
+		printf("    accessable\n");
+	} else {
+		printf("    not found\n");
+	}
+
+	result = pIEcoLab1->pVTbl->QueryInterface(pIEcoLab1, &IID_IEcoLab1, (void **) &pIEcoLab1);
+	printf("  EcoLab1 from EcoLab1:\n");
+	if (result == 0) {
+		pIEcoLab1->pVTbl->Release(pIEcoLab1);
+		printf("    accessable\n");
+	} else {
+		printf("    not found\n");
+	}
+	
+	printf("\nAccess to other components from IEcoCalculatorX\n");
+	result = pIEcoCalculatorX->pVTbl->QueryInterface(pIEcoCalculatorX, &IID_IEcoCalculatorX, (void **) &pIEcoCalculatorX);
+	printf("  IEcoCalculatorX from IEcoCalculatorX:\n");
+	if (result == 0) {
+		pIEcoCalculatorX->pVTbl->Release(pIEcoCalculatorX);
+		printf("    accessable\n");
+	} else {
+		printf("    not found\n");
+	}
+
+	result = pIEcoCalculatorX->pVTbl->QueryInterface(pIEcoCalculatorX, &IID_IEcoCalculatorY, (void **) &pIEcoCalculatorY);
+	printf("  IEcoCalculatorY from IEcoCalculatorX:\n");
+	if (result == 0) {
+		pIEcoCalculatorY->pVTbl->Release(pIEcoCalculatorY);
+		printf("    accessable\n");
+	} else {
+		printf("    not found\n");
+	}
+
+	result = pIEcoCalculatorX->pVTbl->QueryInterface(pIEcoCalculatorX, &IID_IEcoLab1, (void **) &pIEcoLab1);
+	printf("  EcoLab1 from IEcoCalculatorX:\n");
+	if (result == 0) {
+		pIEcoLab1->pVTbl->Release(pIEcoLab1);
+		printf("    accessable\n");
+	} else {
+		printf("    not found\n");
+	}
+	
+	printf("\nAccess to other components from IEcoCalculatorY\n");
+	result = pIEcoCalculatorY->pVTbl->QueryInterface(pIEcoCalculatorY, &IID_IEcoCalculatorX, (void **) &pIEcoCalculatorX);
+	printf("  IEcoCalculatorX from IEcoCalculatorY:\n");
+	if (result == 0) {
+		pIEcoCalculatorX->pVTbl->Release(pIEcoCalculatorX);
+		printf("    accessable\n");
+	} else {
+		printf("    not found\n");
+	}
+
+	result = pIEcoCalculatorY->pVTbl->QueryInterface(pIEcoCalculatorY, &IID_IEcoCalculatorY, (void **) &pIEcoCalculatorY);
+	printf("  IEcoCalculatorY from IEcoCalculatorY:\n");
+	if (result == 0) {
+		pIEcoCalculatorY->pVTbl->Release(pIEcoCalculatorY);
+		printf("    accessable\n");
+	} else {
+		printf("    not found\n");
+	}
+
+	result = pIEcoCalculatorY->pVTbl->QueryInterface(pIEcoCalculatorY, &IID_IEcoLab1, (void **) &pIEcoLab1);
+	printf("  EcoLab1 from IEcoCalculatorY:\n");
+	if (result == 0) {
+		pIEcoLab1->pVTbl->Release(pIEcoLab1);
+		printf("    accessable\n");
+	} else {
+		printf("    not found\n");
+	}
+
+	printf("\n==================================");
+	getchar();
+	/* Тестирование MergeSort */
+	printf("Test MergeSort\n");
+
 	file = fopen("stats.csv", "w");
 	fprintf(file, "SortingName,DataType,ArraySize,Time\n");
 
 
-	for (i = 0; i < sizesNumber; ++i) {
+	//for (i = 0; i < sizesNumber; ++i) {
+	for (i = 0; i < 0; ++i) {
 		testArrayInt(pIEcoLab1, pIMem, sizes[i], file);
 		testArrayLong(pIEcoLab1, pIMem, sizes[i], file);
 		testArrayFloat(pIEcoLab1, pIMem, sizes[i], file);
